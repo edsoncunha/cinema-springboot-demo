@@ -1,4 +1,4 @@
-[![Continuous Build](https://github.com/edsoncunha/cinema-springboot-demo/actions/workflows/continuous-build.yml/badge.svg)](https://github.com/edsoncunha/cinema-micronaut-kotlin-spock/actions/workflows/github-actions-ci.yml) [![codecov](https://codecov.io/gh/edsoncunha/cinema-micronaut-kotlin-spock/branch/main/graph/badge.svg)](https://codecov.io/gh/edsoncunha/cinema-springboot-demo)
+[![Continuous Build](https://github.com/edsoncunha/cinema-springboot-demo/actions/workflows/continuous-build.yml/badge.svg)](https://github.com/edsoncunha/cinema-springboot-demo/actions/workflows/continuous-build.yml) [![codecov](https://codecov.io/gh/edsoncunha/cinema-springboot-demo/branch/main/graph/badge.svg)](https://codecov.io/gh/edsoncunha/cinema-springboot-demo)
 
 # Cinema Spring Boot Demo
 Sample Cinema Theater application enriched by [OMDB API](https://www.omdbapi.com/)
