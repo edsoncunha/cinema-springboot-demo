@@ -10,3 +10,10 @@ omdb:
   url: https://www.omdbapi.com/?apikey=${omdb.api-key}&i={movieId}
   api-key: ${OMDB_API_KEY}
 
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:15432/cinemademo?currentSchema=public"
+    username: cinemademo
+    password: cinemademo
+  jpa:
+    database-platform: "org.hibernate.dialect.PostgreSQL9Dialect"

@@ -9,18 +9,14 @@ import io.swagger.v3.oas.annotations.info.Info
 @SpringBootApplication
 class CinemademoSpringbootApplication
 
-
-
-fun main(args: Array<String>) {
-	runApplication<CinemademoSpringbootApplication>(*args)
-}
-
-
 @OpenAPIDefinition(
 	info = Info(
 		title = "Cinema Demo",
 		version = "0.1"
 	)
 )
-object Api {
+object Api
+
+fun main(args: Array<String>) {
+	runApplication<CinemademoSpringbootApplication>(*args)
 }

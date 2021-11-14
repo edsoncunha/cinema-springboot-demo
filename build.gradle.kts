@@ -5,6 +5,7 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.5.31"
 	kotlin("plugin.spring") version "1.5.31"
+	kotlin("plugin.jpa") version "1.5.31"
 }
 
 group = "io.edsoncunha"
@@ -15,22 +16,37 @@ repositories {
 	mavenCentral()
 }
 
+val testContainersVersion = "1.16.2"
 val springDocVersion = "1.5.2"
 
 dependencies {
-
-	implementation("org.springframework.boot:spring-boot-starter-web")
-	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-	implementation("org.flywaydb:flyway-core")
+	// kotlin setup
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
+	// spring boot dependencies
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	// open api documentation
 	implementation("org.springdoc:springdoc-openapi:$springDocVersion")
 	implementation("org.springdoc:springdoc-openapi-ui:$springDocVersion")
 	implementation("org.springdoc:springdoc-openapi-kotlin:$springDocVersion")
 
-	runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// test container
+	testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
+	testImplementation("org.testcontainers:postgresql:$testContainersVersion")
+
+	// postgresql
+	runtimeOnly("org.postgresql:postgresql")
+
+	// database migrations with Flyway
+	implementation("org.flywaydb:flyway-core")
+
+	// fluent test assertions in kotlin
+	testImplementation("io.strikt:strikt-core:0.32.0")
 }
 
 tasks.withType<KotlinCompile> {

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 class MovieController(private val omdbAdapter: OmdbAdapter) {
 
     @GetMapping("/{id}")
-    @Operation(summary = "Gets a specific movie")
+    @Operation(summary = "Gets information from a specific movie, such as description and ratings")
     @ApiResponses(
         value = [
             ApiResponse(responseCode = "200", description = "OK"),

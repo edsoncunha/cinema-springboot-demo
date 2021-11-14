@@ -1,0 +1,12 @@
+version: '2.1'
+
+services:
+
+  postgres:
+    image: postgres:12.5-alpine
+    environment:
+      POSTGRES_USER: "cinemademo"
+      POSTGRES_PASSWORD: "cinemademo"
+      POSTGRES_DB: "cinemademo"
+    ports:
+      - "15432:5432"
