@@ -1,5 +1,7 @@
-package io.edsoncunha.cinemademospringboot.jobs
+package io.edsoncunha.cinemademospringboot.bootstrap
 
+import io.edsoncunha.cinemademospringboot.jobs.Clock
+import io.edsoncunha.cinemademospringboot.jobs.MovieUpdaterJob
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

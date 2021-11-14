@@ -22,5 +22,7 @@ class Movie(
     val imdbId: String,
 
     @Column(nullable = false)
-    var lastUpdate: LocalDateTime = LocalDateTime.now()
+    var lastUpdate: LocalDateTime = LocalDateTime.now(),
+
+    var customersRating: Double? = 0.0
 )

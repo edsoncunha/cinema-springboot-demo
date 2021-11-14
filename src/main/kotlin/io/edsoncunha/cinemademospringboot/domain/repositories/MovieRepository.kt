@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MovieRepository : CrudRepository<Movie, Long> {
     @Query("select * from movie where imdb_id = ?1", nativeQuery = true)
-    fun findByImdbId(imdbId: String): Movie
+    fun findByImdbId(imdbId: String): Movie?
 }

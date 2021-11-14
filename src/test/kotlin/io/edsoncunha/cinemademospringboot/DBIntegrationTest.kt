@@ -1,6 +1,8 @@
 package io.edsoncunha.cinemademospringboot
 
+import io.edsoncunha.cinemademospringboot.domain.exceptions.MovieNotFoundException
 import io.edsoncunha.cinemademospringboot.domain.repositories.MovieRepository
+import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.assertThrows
@@ -39,7 +41,9 @@ class DBIntegrationTest {
     }
 
     @Autowired
-    private lateinit var repository: MovieRepository
+    private lateinit var service: MovieService
+
+
 
     @ParameterizedTest(name = "Check if \"{0}\" ({1}) is in initial database load")
     @CsvSource(
@@ -53,11 +57,11 @@ class DBIntegrationTest {
         "'The Fate of the Furious', 'tt4630562'"
     )
     fun `fetch movie from initial database load`(name: String, imdbId: String) {
-        repository.findByImdbId(imdbId)
+        service.getMovie(imdbId)
     }
 
     @Test
     fun `Exception is thrown when movie is not found`() {
-        assertThrows<EmptyResultDataAccessException> { repository.findByImdbId("dummy") }
+        assertThrows<MovieNotFoundException> { service.getMovie("dummy") }
     }
 }
