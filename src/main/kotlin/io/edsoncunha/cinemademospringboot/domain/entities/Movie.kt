@@ -1,10 +1,10 @@
 package io.edsoncunha.cinemademospringboot.domain.entities
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-class Movie (
+class Movie(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
@@ -15,24 +15,12 @@ class Movie (
     @Column(nullable = false)
     val plot: String,
 
+    @Column(nullable = true)
+    val runtimeInMinutes: Int?,
+
+    @Column
+    val imdbId: String,
+
     @Column(nullable = false)
-    val releaseDate: LocalDate?,
-
-    @Column(nullable = true)
-    val customersRating: Double?,
-
-    @Column(nullable = false)
-    val numberOfCustomerRatings: Int,
-
-    @Column(nullable = true)
-    val imdbRating: Double?,
-
-    @Column(nullable = true)
-    val rottenTomatoesRating: Double?,
-
-    @Column(nullable = true)
-    val metacriticRating: Double?,
-
-    @Column(nullable = true)
-    val runtimeInMinutes: Int?
+    var lastUpdate: LocalDateTime = LocalDateTime.now()
 )

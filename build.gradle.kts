@@ -18,6 +18,7 @@ repositories {
 
 val testContainersVersion = "1.16.2"
 val springDocVersion = "1.5.2"
+val log4jApiKotlinVersion = "1.0.0"
 
 dependencies {
 	// kotlin setup
@@ -28,6 +29,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-log4j2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	// open api documentation
@@ -47,6 +49,14 @@ dependencies {
 
 	// fluent test assertions in kotlin
 	testImplementation("io.strikt:strikt-core:0.32.0")
+
+	// logging
+	implementation("org.apache.logging.log4j:log4j-api-kotlin:$log4jApiKotlinVersion")
+	configurations.all {
+		exclude(group = "org.springframework.boot", module = "spring-boot-starter-logging")
+	}
+
+	testImplementation("io.mockk:mockk:1.10.6")
 }
 
 tasks.withType<KotlinCompile> {

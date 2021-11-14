@@ -1,7 +1,7 @@
 package io.edsoncunha.cinemademospringboot.controllers
 
-import io.edsoncunha.cinemademospringboot.adapters.OmdbAdapter
-import io.edsoncunha.cinemademospringboot.adapters.OmdbMovie
+import io.edsoncunha.cinemademospringboot.domain.entities.Movie
+import io.edsoncunha.cinemademospringboot.domain.repositories.MovieRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/movies")
 @Tag(name = "Movies")
-class MovieController(private val omdbAdapter: OmdbAdapter) {
-
+class MovieController(private val movieRepository: MovieRepository) {
     @GetMapping("/{id}")
     @Operation(summary = "Gets information from a specific movie, such as description and ratings")
     @ApiResponses(
@@ -23,7 +22,7 @@ class MovieController(private val omdbAdapter: OmdbAdapter) {
             ApiResponse(responseCode = "404", description = "Movie not found")
         ]
     )
-    fun getMovie(id: String): OmdbMovie? {
-        return omdbAdapter.fetchMovie(id)
+    fun getMovie(id: String): Movie {
+        return movieRepository.findByImdbId(id)
     }
 }

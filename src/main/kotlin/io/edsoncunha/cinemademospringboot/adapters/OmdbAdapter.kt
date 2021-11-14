@@ -5,7 +5,7 @@ import org.springframework.web.client.RestTemplate
 
 @Component
 class OmdbAdapter(private val restTemplate: RestTemplate, private val config: OmdbProperties) {
-    fun fetchMovie(id: String) : OmdbMovie? {
-       return restTemplate.getForObject(config.url, OmdbMovie::class.java, mapOf("movieId" to id))
+    fun fetchMovie(imdbId: String) : OmdbMovie {
+       return restTemplate.getForObject(config.url, OmdbMovie::class.java, mapOf("movieId" to imdbId))!!
     }
 }

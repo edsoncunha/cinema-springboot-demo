@@ -1,18 +1,19 @@
 package io.edsoncunha.cinemademospringboot
 
 import io.edsoncunha.cinemademospringboot.domain.repositories.MovieRepository
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.assertThrows
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import strikt.api.expectThat
-import strikt.assertions.isNotNull
 
 @SpringBootTest
 @Testcontainers
@@ -37,8 +38,8 @@ class DBIntegrationTest {
         }
     }
 
-	@Autowired
-	private lateinit var repository: MovieRepository
+    @Autowired
+    private lateinit var repository: MovieRepository
 
     @ParameterizedTest(name = "Check if \"{0}\" ({1}) is in initial database load")
     @CsvSource(
@@ -52,9 +53,11 @@ class DBIntegrationTest {
         "'The Fate of the Furious', 'tt4630562'"
     )
     fun `fetch movie from initial database load`(name: String, imdbId: String) {
-		val movie = repository.findByImdbId(imdbId)
-		expectThat(movie).isNotNull()
+        repository.findByImdbId(imdbId)
     }
 
-
+    @Test
+    fun `Exception is thrown when movie is not found`() {
+        assertThrows<EmptyResultDataAccessException> { repository.findByImdbId("dummy") }
+    }
 }

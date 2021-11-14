@@ -9,6 +9,7 @@ springdoc:
 omdb:
   url: https://www.omdbapi.com/?apikey=${omdb.api-key}&i={movieId}
   api-key: ${OMDB_API_KEY}
+  daily-quota: 1000
 
 spring:
   datasource:
