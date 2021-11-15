@@ -1,10 +1,11 @@
-package io.edsoncunha.cinemademospringboot.bootstrap
+package io.edsoncunha.cinemademospringboot.configuration
 
 import io.edsoncunha.cinemademospringboot.jobs.Clock
 import io.edsoncunha.cinemademospringboot.jobs.MovieUpdaterJob
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Profile
 import org.springframework.scheduling.TriggerContext
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.scheduling.annotation.SchedulingConfigurer
@@ -16,6 +17,7 @@ import java.util.concurrent.Executors
 
 @Configuration
 @EnableScheduling
+@Profile("!it")
 class MovieUpdaterScheduler(private val updaterJob: MovieUpdaterJob, private val clock: Clock) : SchedulingConfigurer {
     private val log = LoggerFactory.getLogger(MovieUpdaterScheduler::class.java)
 

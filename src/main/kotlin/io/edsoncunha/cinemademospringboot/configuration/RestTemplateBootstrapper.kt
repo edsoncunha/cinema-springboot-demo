@@ -1,4 +1,4 @@
-package io.edsoncunha.cinemademospringboot.bootstrap
+package io.edsoncunha.cinemademospringboot.configuration
 
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean

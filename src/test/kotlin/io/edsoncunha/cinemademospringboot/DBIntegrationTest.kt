@@ -1,7 +1,6 @@
 package io.edsoncunha.cinemademospringboot
 
-import io.edsoncunha.cinemademospringboot.domain.exceptions.MovieNotFoundException
-import io.edsoncunha.cinemademospringboot.domain.repositories.MovieRepository
+import io.edsoncunha.cinemademospringboot.domain.exceptions.NotFoundException
 import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -10,7 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.context.DynamicPropertyRegistry
 import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
@@ -20,6 +19,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 @SpringBootTest
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@ActiveProfiles("it")
 class DBIntegrationTest {
 
     companion object {
@@ -62,6 +62,6 @@ class DBIntegrationTest {
 
     @Test
     fun `Exception is thrown when movie is not found`() {
-        assertThrows<MovieNotFoundException> { service.getMovie("dummy") }
+        assertThrows<NotFoundException> { service.getMovie("dummy") }
     }
 }

@@ -1,6 +1,6 @@
-package io.edsoncunha.cinemademospringboot.controllers
+package io.edsoncunha.cinemademospringboot.api
 
-import io.edsoncunha.cinemademospringboot.domain.dto.UserMovieRating
+import io.edsoncunha.cinemademospringboot.domain.dto.UserMovieRatingRequest
 import io.edsoncunha.cinemademospringboot.domain.entities.Movie
 import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import io.swagger.v3.oas.annotations.Operation
@@ -12,9 +12,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/movies")
-@Tag(name = "Movies")
-class MovieController(private val movieService: MovieService) {
+@RequestMapping("/api/movie")
+@Tag(name = "Movie")
+class MovieApi(private val movieService: MovieService) {
     @GetMapping("/{id}")
     @Operation(summary = "Gets information from a specific movie, such as description and ratings")
     @ApiResponses(
@@ -35,7 +35,7 @@ class MovieController(private val movieService: MovieService) {
             ApiResponse(responseCode = "404", description = "Movie not found")
         ]
     )
-    fun rateMovie(@PathVariable("id") id: String, @RequestBody userRating: UserMovieRating): ResponseEntity<Void> {
+    fun rateMovie(@PathVariable("id") id: String, @RequestBody userRating: UserMovieRatingRequest): ResponseEntity<Void> {
         movieService.rateMovie(id, userRating.rating)
         return ResponseEntity<Void>(HttpStatus.CREATED)
     }

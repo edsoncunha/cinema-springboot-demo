@@ -11,6 +11,9 @@ omdb:
   api-key: ${OMDB_API_KEY}
   daily-quota: 1000
 
+jwt:
+  secret: 0c738f8a60cc81e9abf07c13f12b12ac13561b6873af3fd7e38bb0ce374a6ad6
+
 spring:
   datasource:
     url: "jdbc:postgresql://localhost:15432/cinemademo?currentSchema=public"
