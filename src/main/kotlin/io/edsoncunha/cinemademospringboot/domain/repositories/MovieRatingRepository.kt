@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface MovieRatingRepository : CrudRepository<MovieRating, Long> {
-    @Query("SELECT AVG(mr.rating) FROM movie_rating mr " +
-            "JOIN movie m " +
-            "ON m.id = mr.movie_id " +
-            "WHERE m.imdb_id = ?1", nativeQuery = true)
-    fun getAverageRateByImdbId(imdbId: String): Double?
+    @Query("SELECT AVG(rating) FROM movie_rating " +
+            "WHERE movie_id = ?1", nativeQuery = true)
+    fun getAverageRateById(id: Long): Double?
 }

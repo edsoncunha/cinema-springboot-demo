@@ -5,7 +5,7 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import javax.validation.constraints.Min
 
-data class UpdateMovieSessionRequest(
+data class UpdateSessionRequest(
     val dayOfWeek: DayOfWeek,
     val sessionTime: LocalTime,
     val price: BigDecimal,

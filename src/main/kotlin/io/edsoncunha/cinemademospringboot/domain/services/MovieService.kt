@@ -1,7 +1,9 @@
 package io.edsoncunha.cinemademospringboot.domain.services
 
-import io.edsoncunha.cinemademospringboot.domain.dto.CreateMovieSessionRequest
-import io.edsoncunha.cinemademospringboot.domain.dto.UpdateMovieSessionRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.CreateSessionRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.MovieWithSessionsView
+import io.edsoncunha.cinemademospringboot.domain.dto.SessionView
+import io.edsoncunha.cinemademospringboot.domain.dto.UpdateSessionRequest
 import io.edsoncunha.cinemademospringboot.domain.entities.Movie
 import io.edsoncunha.cinemademospringboot.domain.entities.MovieRating
 import io.edsoncunha.cinemademospringboot.domain.entities.Session
@@ -17,15 +19,15 @@ class MovieService(
     private val movieRatingRepository: MovieRatingRepository,
     private val movieSessionRepository: MovieSessionRepository
 ) {
-    fun getMovie(imdbId: String): Movie {
-        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException("movie")
-        return movie.also { it.customersRating = getRating(imdbId) }
+    fun getMovie(id: Long): Movie {
+        val movie = movieRepository.findById(id).orElseThrow { NotFoundException("movie") }
+        return movie.also { it.customersRating = getRating(id) }
     }
 
-    fun getRating(imdbId: String) = movieRatingRepository.getAverageRateByImdbId(imdbId)
+    fun getRating(id: Long) = movieRatingRepository.getAverageRateById(id)
 
-    fun rateMovie(imdbId: String, rating: Int) {
-        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException("movie")
+    fun rateMovie(id: Long, rating: Int) {
+        val movie = movieRepository.findById(id).orElseThrow { NotFoundException("movie") }
 
         movieRatingRepository.save(
             MovieRating(
@@ -35,7 +37,7 @@ class MovieService(
         )
     }
 
-    fun createSession(id: Long, request: CreateMovieSessionRequest): Session {
+    fun createSession(id: Long, request: CreateSessionRequest): Session {
         val movie = movieRepository.findById(id).orElseThrow { NotFoundException("movie") }
 
         return movieSessionRepository.save(
@@ -50,7 +52,7 @@ class MovieService(
         )
     }
 
-    fun updateSession(id: Long, request: UpdateMovieSessionRequest) {
+    fun updateSession(id: Long, request: UpdateSessionRequest) {
         val sessionToUpdate = movieSessionRepository.findById(id).orElseThrow { NotFoundException("session") }
 
         sessionToUpdate.apply {
@@ -65,4 +67,25 @@ class MovieService(
     }
 
     fun deleteSession(id: Long) = movieSessionRepository.deleteById(id)
+
+    fun getMovieSessions(id: Long): MovieWithSessionsView {
+        val movie = getMovie(id)
+
+        val sessions = movieSessionRepository.findAllByMovieId(id)
+
+        return MovieWithSessionsView(
+            title = movie.title,
+            plot = movie.plot,
+            rating = movieRatingRepository.getAverageRateById(id),
+            sessions = sessions.map {
+                SessionView(
+                    dayOfWeek = it.dayOfWeek,
+                    capacity = it.capacity,
+                    price = it.price,
+                    room = it.room,
+                    sessionTime = it.sessionTime
+                )
+            }
+        )
+    }
 }

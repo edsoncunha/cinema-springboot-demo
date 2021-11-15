@@ -1,6 +1,7 @@
 package io.edsoncunha.cinemademospringboot
 
 import io.edsoncunha.cinemademospringboot.domain.exceptions.NotFoundException
+import io.edsoncunha.cinemademospringboot.domain.repositories.MovieRepository
 import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -15,7 +16,6 @@ import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
-import java.time.LocalDate
 
 @SpringBootTest
 @Testcontainers
@@ -44,7 +44,8 @@ class DBIntegrationTest {
     @Autowired
     private lateinit var service: MovieService
 
-
+    @Autowired
+    private lateinit var repository: MovieRepository
 
     @ParameterizedTest(name = "Check if \"{0}\" ({1}) is in initial database load")
     @CsvSource(
@@ -58,11 +59,11 @@ class DBIntegrationTest {
         "'The Fate of the Furious', 'tt4630562'"
     )
     fun `fetch movie from initial database load`(name: String, imdbId: String) {
-        service.getMovie(imdbId)
+        repository.findByImdbId(imdbId)
     }
 
     @Test
     fun `Exception is thrown when movie is not found`() {
-        assertThrows<NotFoundException> { service.getMovie("dummy") }
+        assertThrows<NotFoundException> { service.getMovie(12345) }
     }
 }

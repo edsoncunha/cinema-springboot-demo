@@ -5,10 +5,17 @@ import java.time.DayOfWeek
 import java.time.LocalTime
 import javax.validation.constraints.Min
 
-data class CreateMovieSessionRequest(
+data class MovieWithSessionsView(
+    val title: String,
+    val plot: String,
+    val rating: Double?,
+    val sessions: List<SessionView>
+)
+
+data class SessionView(
     val dayOfWeek: DayOfWeek,
     val sessionTime: LocalTime,
     val price: BigDecimal,
-    val room: String, // this could be another entity, but it is supposed to be just a small demo, right?
+    val room: String,
     @Min(1) val capacity: Int
 )

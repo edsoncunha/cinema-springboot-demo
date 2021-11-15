@@ -1,10 +1,9 @@
 package io.edsoncunha.cinemademospringboot.api
 
-import io.edsoncunha.cinemademospringboot.domain.dto.CreateMovieSessionRequest
-import io.edsoncunha.cinemademospringboot.domain.dto.UpdateMovieSessionRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.CreateSessionRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.UpdateSessionRequest
 import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.media.ExampleObject
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.responses.ApiResponses
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -28,7 +27,7 @@ class AdminApi(private val movieService: MovieService) {
     )
     fun createMovieSession(
         @PathVariable("id") id: Long,
-        @RequestBody createSessionRequest: CreateMovieSessionRequest
+        @RequestBody createSessionRequest: CreateSessionRequest
     ): ResponseEntity<Void> {
         movieService.createSession(id, createSessionRequest)
         return ResponseEntity<Void>(HttpStatus.CREATED)
@@ -46,7 +45,7 @@ class AdminApi(private val movieService: MovieService) {
     )
     fun updateMovieSession(
         @PathVariable("id") id: Long,
-        @RequestBody createSessionRequest: UpdateMovieSessionRequest
+        @RequestBody createSessionRequest: UpdateSessionRequest
     ): ResponseEntity<Void> {
         movieService.updateSession(id, createSessionRequest)
         return ResponseEntity<Void>(HttpStatus.OK)

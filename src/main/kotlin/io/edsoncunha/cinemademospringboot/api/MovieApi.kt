@@ -1,6 +1,7 @@
 package io.edsoncunha.cinemademospringboot.api
 
-import io.edsoncunha.cinemademospringboot.domain.dto.UserMovieRatingRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.MovieWithSessionsView
+import io.edsoncunha.cinemademospringboot.domain.dto.RateRequest
 import io.edsoncunha.cinemademospringboot.domain.entities.Movie
 import io.edsoncunha.cinemademospringboot.domain.services.MovieService
 import io.swagger.v3.oas.annotations.Operation
@@ -23,8 +24,20 @@ class MovieApi(private val movieService: MovieService) {
             ApiResponse(responseCode = "404", description = "Movie not found")
         ]
     )
-    fun getMovie(@PathVariable("id") id: String): Movie {
+    fun getMovie(@PathVariable("id") id: Long): Movie {
         return movieService.getMovie(id)
+    }
+
+    @GetMapping("/{id}/sessions")
+    @Operation(summary = "Gets sessions from a specific movie")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "OK"),
+            ApiResponse(responseCode = "404", description = "Movie not found")
+        ]
+    )
+    fun getMovieSessions(@PathVariable("id") id: Long): MovieWithSessionsView {
+        return movieService.getMovieSessions(id)
     }
 
     @PostMapping("/{id}/rate")
@@ -35,7 +48,7 @@ class MovieApi(private val movieService: MovieService) {
             ApiResponse(responseCode = "404", description = "Movie not found")
         ]
     )
-    fun rateMovie(@PathVariable("id") id: String, @RequestBody userRating: UserMovieRatingRequest): ResponseEntity<Void> {
+    fun rateMovie(@PathVariable("id") id: Long, @RequestBody userRating: RateRequest): ResponseEntity<Void> {
         movieService.rateMovie(id, userRating.rating)
         return ResponseEntity<Void>(HttpStatus.CREATED)
     }
