@@ -84,6 +84,8 @@ class SecurityConfig(
             .antMatchers("/").permitAll()
             .antMatchers(String.format("%s/**", restApiDocPath)).permitAll()
             .antMatchers(String.format("%s/**", swaggerPath)).permitAll()
+            .antMatchers(String.format("/swagger-ui/**", swaggerPath)).permitAll()
+            .antMatchers(String.format("/swagger-resources/**", swaggerPath)).permitAll()
             // Our public endpoints
             .antMatchers("/api/public/**").permitAll()
             .antMatchers(HttpMethod.GET, "/api/movie/**").permitAll()

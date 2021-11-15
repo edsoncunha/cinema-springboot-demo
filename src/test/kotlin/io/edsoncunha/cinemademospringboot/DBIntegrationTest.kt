@@ -15,6 +15,7 @@ import org.springframework.test.context.DynamicPropertySource
 import org.testcontainers.containers.PostgreSQLContainer
 import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
+import java.time.LocalDate
 
 @SpringBootTest
 @Testcontainers
