@@ -2,7 +2,7 @@ package io.edsoncunha.cinemademospringboot.api
 
 
 import io.edsoncunha.cinemademospringboot.domain.exceptions.NotFoundException
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.AccessDeniedException
@@ -17,17 +17,17 @@ import javax.validation.ValidationException
 
 @ControllerAdvice
 class ApiExceptionHandler {
-    private val logger = LogManager.getLogger()
+    private val logger = LoggerFactory.getLogger(ApiExceptionHandler::class.java)
 
     @ExceptionHandler(NotFoundException::class)
     fun handleNotFoundException(
         request: HttpServletRequest,
         ex: NotFoundException
     ): ResponseEntity<ApiCallError<String>> {
-        logger.error("NotFoundException {}\n", request.requestURI, ex)
+        logger.error("Not found: {}", request.requestURI, ex)
         return ResponseEntity
             .status(HttpStatus.NOT_FOUND)
-            .body(ApiCallError("Not found exception", listOf(ex.message)))
+            .body(ApiCallError("${ex.entityName} not found", listOf(ex.message)))
     }
 
     @ExceptionHandler(ValidationException::class)
@@ -35,7 +35,7 @@ class ApiExceptionHandler {
         request: HttpServletRequest,
         ex: ValidationException
     ): ResponseEntity<ApiCallError<String>> {
-        logger.error("ValidationException {}\n", request.requestURI, ex)
+        logger.error("Validation exception {}\n", request.requestURI, ex)
         return ResponseEntity
             .badRequest()
             .body(ApiCallError("Validation exception", listOf(ex.message)))
@@ -46,7 +46,7 @@ class ApiExceptionHandler {
         request: HttpServletRequest,
         ex: MissingServletRequestParameterException
     ): ResponseEntity<ApiCallError<String>> {
-        logger.error("handleMissingServletRequestParameterException {}\n", request.requestURI, ex)
+        logger.error("Missing request parameters {}\n", request.requestURI, ex)
         return ResponseEntity
             .badRequest()
             .body(ApiCallError("Missing request parameter", listOf(ex.message)))
@@ -57,7 +57,7 @@ class ApiExceptionHandler {
         request: HttpServletRequest,
         ex: MethodArgumentTypeMismatchException
     ): ResponseEntity<ApiCallError<Map<String, Any?>>> {
-        logger.error("handleMethodArgumentTypeMismatchException {}\n", request.requestURI, ex)
+        logger.error("Method argument type mismatch {}\n", request.requestURI, ex)
         val details = mapOf(
             "paramName" to ex.name,
             "paramValue" to ex.value,
@@ -73,7 +73,7 @@ class ApiExceptionHandler {
         request: HttpServletRequest,
         ex: MethodArgumentNotValidException
     ): ResponseEntity<ApiCallError<Map<String, String?>>> {
-        logger.error("handleMethodArgumentNotValidException {}\n", request.requestURI, ex)
+        logger.error("Method argument not valid {}\n", request.requestURI, ex)
         val details = ex.bindingResult
             .fieldErrors
             .map {
@@ -95,7 +95,7 @@ class ApiExceptionHandler {
         request: HttpServletRequest,
         ex: AccessDeniedException
     ): ResponseEntity<ApiCallError<String>> {
-        logger.error("handleAccessDeniedException {}\n", request.requestURI, ex)
+        logger.error("Access denied {}\n", request.requestURI, ex)
         return ResponseEntity
             .status(HttpStatus.FORBIDDEN)
             .body(ApiCallError("Access denied!", listOf(ex.message)))
@@ -103,12 +103,11 @@ class ApiExceptionHandler {
 
     @ExceptionHandler(Exception::class)
     fun handleInternalServerError(request: HttpServletRequest, ex: Exception): ResponseEntity<ApiCallError<String>> {
-        logger.error("handleInternalServerError {}\n", request.requestURI, ex)
+        logger.error("Internal server error {}\n", request.requestURI, ex)
         return ResponseEntity
             .status(HttpStatus.INTERNAL_SERVER_ERROR)
             .body(ApiCallError("Internal server error", listOf(ex.message)))
     }
-
 
     data class ApiCallError<T>(
         val message: String,

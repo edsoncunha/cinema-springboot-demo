@@ -1,3 +1,3 @@
 package io.edsoncunha.cinemademospringboot.domain.exceptions
 
-class NotFoundException : RuntimeException()
+class NotFoundException(val entityName: String) : RuntimeException()

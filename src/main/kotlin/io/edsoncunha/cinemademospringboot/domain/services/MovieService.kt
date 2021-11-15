@@ -1,6 +1,7 @@
 package io.edsoncunha.cinemademospringboot.domain.services
 
 import io.edsoncunha.cinemademospringboot.domain.dto.CreateMovieSessionRequest
+import io.edsoncunha.cinemademospringboot.domain.dto.UpdateMovieSessionRequest
 import io.edsoncunha.cinemademospringboot.domain.entities.Movie
 import io.edsoncunha.cinemademospringboot.domain.entities.MovieRating
 import io.edsoncunha.cinemademospringboot.domain.entities.Session
@@ -17,14 +18,14 @@ class MovieService(
     private val movieSessionRepository: MovieSessionRepository
 ) {
     fun getMovie(imdbId: String): Movie {
-        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException()
+        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException("movie")
         return movie.also { it.customersRating = getRating(imdbId) }
     }
 
     fun getRating(imdbId: String) = movieRatingRepository.getAverageRateByImdbId(imdbId)
 
     fun rateMovie(imdbId: String, rating: Int) {
-        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException()
+        val movie = movieRepository.findByImdbId(imdbId) ?: throw NotFoundException("movie")
 
         movieRatingRepository.save(
             MovieRating(
@@ -35,7 +36,7 @@ class MovieService(
     }
 
     fun createSession(id: Long, request: CreateMovieSessionRequest): Session {
-        val movie = movieRepository.findById(id).orElseThrow { NotFoundException() }
+        val movie = movieRepository.findById(id).orElseThrow { NotFoundException("movie") }
 
         return movieSessionRepository.save(
             Session(
@@ -49,4 +50,19 @@ class MovieService(
         )
     }
 
+    fun updateSession(id: Long, request: UpdateMovieSessionRequest) {
+        val sessionToUpdate = movieSessionRepository.findById(id).orElseThrow { NotFoundException("session") }
+
+        sessionToUpdate.apply {
+            dayOfWeek = request.dayOfWeek
+            sessionTime = request.sessionTime
+            price = request.price
+            capacity = request.capacity
+            room = request.room
+        }
+
+        movieSessionRepository.save(sessionToUpdate)
+    }
+
+    fun deleteSession(id: Long) = movieSessionRepository.deleteById(id)
 }

@@ -6,7 +6,7 @@ import java.time.LocalTime
 import javax.persistence.*
 import javax.validation.constraints.Min
 
-@Entity(name = "cinema_sessions")
+@Entity(name = "movie_sessions")
 class Session(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,13 +15,13 @@ class Session(
     @ManyToOne(fetch = FetchType.LAZY)
     val movie: Movie,
 
-    @Column val dayOfWeek: DayOfWeek,
+    @Column var dayOfWeek: DayOfWeek,
 
-    @Column val sessionTime: LocalTime,
+    @Column var sessionTime: LocalTime,
 
-    @Column val price: BigDecimal,
+    @Column var price: BigDecimal,
 
-    @Column val room: String, // this could be another entity, but it is supposed to be just a small demo, right?
+    @Column var room: String, // this could be another entity, but it is supposed to be just a small demo, right?
 
-    @Column @Min(1) val capacity: Int
+    @Column @Min(1) var capacity: Int
 )
