@@ -2,6 +2,8 @@ omdb:
   url: https://www.omdbapi.com/?apikey=${omdb.api-key}&i={movieId}
   api-key: dummy
   daily-quota: 1000
+  connect-timeout: 500
+  read-timeout: 500
 
 springdoc:
   api-docs:
